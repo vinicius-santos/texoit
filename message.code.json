@@ -1,0 +1,22 @@
+{
+    "INFO": {
+      "IRE001": { "status": "INFO", "summary": "", "message": ""}
+    },
+    "SUCCESS": {
+      "SRE001": { "status": "SUCCESS", "summary": "", "message": ""}
+    },
+    "WARNNING": {
+      "WRE001": { "status": "WARNNING", "summary": "", "message": ""}
+    },
+    "ERROR": {
+      "ERE001": { "status": "ERROR", "summary": "error loading information", "message": ""},
+      "ERE002": { "status": "ERROR", "summary": "error load database", "message": ""}
+    },
+    "DANGER": {
+      "DRE001": { "status": "DANGER", "summary": "", "message": ""}
+    },
+    "FATAL": {
+      "FRE001": { "status": "FATAL", "summary": "", "message": ""}
+    }
+  }
+  
