@@ -1,7 +1,10 @@
 var express = require('express');
+var app = express();
+var express = require('express'),
+app = express(),
+port = process.env.PORT || 7030;
 var bodyParser = require('body-parser');
 
-var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '20mb', type: 'application/json' }));
@@ -15,9 +18,6 @@ app.use(function(req, res, next) {
 	next();
 });
 
-var express = require('express'),
-	app = express(),
-	port = process.env.PORT || 7030;
 
 var routes = require('./api/routes/movieRoutes');
 routes(app);
@@ -25,3 +25,4 @@ routes(app);
 app.listen(port);
 
 console.log(`Porta rodando em ${port}`);
+

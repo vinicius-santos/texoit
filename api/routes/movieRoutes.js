@@ -4,7 +4,8 @@ module.exports = function(app) {
 
   app.route('/movies')
     .get(movie.all)
-    //.post(movie.create);
+    .post(movie.create);
+    
 
 //   app.route('/movies/:Id')
 //     .get(movie.get)

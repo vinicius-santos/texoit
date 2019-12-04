@@ -3,14 +3,15 @@
       "IRE001": { "status": "INFO", "summary": "", "message": ""}
     },
     "SUCCESS": {
-      "SRE001": { "status": "SUCCESS", "summary": "", "message": ""}
+      "SRE001": { "status": "SUCCESS", "summary": "Item saved", "message": ""}
     },
     "WARNNING": {
       "WRE001": { "status": "WARNNING", "summary": "", "message": ""}
     },
     "ERROR": {
       "ERE001": { "status": "ERROR", "summary": "error loading information", "message": ""},
-      "ERE002": { "status": "ERROR", "summary": "error load database", "message": ""}
+      "ERE002": { "status": "ERROR", "summary": "error load database", "message": ""},
+      "ERE003": { "status": "ERROR", "summary": "error to save", "message": ""}
     },
     "DANGER": {
       "DRE001": { "status": "DANGER", "summary": "", "message": ""}

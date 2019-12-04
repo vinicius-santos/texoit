@@ -1,7 +1,5 @@
 'use strict';
-var fs = require('fs');
+var message = require('../../message.code.json');
 module.exports = function Message(type, code) {
-	fs.readFile('message.code.json', 'utf8', function(err, data) {
-		return data[type][code]['summary'];
-	});
+	return message[type][code]['summary'];
 };
