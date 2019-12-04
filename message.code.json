@@ -3,7 +3,9 @@
       "IRE001": { "status": "INFO", "summary": "", "message": ""}
     },
     "SUCCESS": {
-      "SRE001": { "status": "SUCCESS", "summary": "Item saved", "message": ""}
+      "SRE001": { "status": "SUCCESS", "summary": "Item saved", "message": ""},
+      "SRE002": { "status": "SUCCESS", "summary": "Item updated", "message": ""},
+      "SRE003": { "status": "SUCCESS", "summary": "Item removed", "message": ""}
     },
     "WARNNING": {
       "WRE001": { "status": "WARNNING", "summary": "", "message": ""}
@@ -11,7 +13,9 @@
     "ERROR": {
       "ERE001": { "status": "ERROR", "summary": "error loading information", "message": ""},
       "ERE002": { "status": "ERROR", "summary": "error load database", "message": ""},
-      "ERE003": { "status": "ERROR", "summary": "error to save", "message": ""}
+      "ERE003": { "status": "ERROR", "summary": "error to save", "message": ""},
+      "ERE004": { "status": "ERROR", "summary": "error to update", "message": ""},
+      "ERE005": { "status": "ERROR", "summary": "error to delete", "message": ""}
     },
     "DANGER": {
       "DRE001": { "status": "DANGER", "summary": "", "message": ""}
