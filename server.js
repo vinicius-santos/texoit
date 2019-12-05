@@ -6,6 +6,7 @@ port = process.env.PORT || 7030;
 var bodyParser = require('body-parser');
 
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: '20mb', type: 'application/json' }));
 
@@ -27,3 +28,5 @@ app.listen(port);
 
 console.log(`Porta rodando em ${port}`);
 
+
+module.exports = app

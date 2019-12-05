@@ -1,0 +1,16 @@
+{ 
+    "FILME_VALIDO":{ 
+       "year":2020,
+       "title":"teste",
+       "studios":"waldisney",
+       "producers":"teste",
+       "winner":""
+    },
+   "FILME_INVALIDO":{ 
+      "":2020,
+      "title":"teste",
+      "studios":"waldisney",
+      "producers":"teste",
+      "winner":""
+   }
+}
