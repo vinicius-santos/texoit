@@ -1,4 +1,4 @@
-NaN;title;studios;producers;winner
+year;title;studios;producers;winner
 1980;Can't Stop the Music;Associated Film Distribution;Allan Carr;yes
 1980;Cruising;Lorimar Productions, United Artists;Jerry Weintraub;
 1980;The Formula;MGM, United Artists;Steve Shagan;
@@ -27,6 +27,7 @@ NaN;title;studios;producers;winner
 1984;Bolero;Cannon Films;Bo Derek;yes
 1984;Cannonball Run II;Warner Bros.;Albert S. Ruddy;
 1984;Rhinestone;20th Century Fox;Marvin Worth and Howard Smith;
+1984;Sheena;Columbia Pictures;Paul Aratow;
 1984;Where the Boys Are '84;TriStar Pictures;Allan Carr;
 1985;Rambo: First Blood Part II;Columbia Pictures;Buzz Feitshans;yes
 1985;Fever Pitch;MGM, United Artists;Freddie Fields;

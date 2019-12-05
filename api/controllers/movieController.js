@@ -1,68 +1,87 @@
 message = require('../helpers/message');
-database = require('../database/database');
-const refresh = database.refresh;
-const movies = database;
+const database = require('../database/database');
+//const refresh = database.refresh;
+//const movies = database;
 //const save = database.save;
 //const update = database.update;
+//const get = database.get;
 
-refresh();
+database.refresh();
+
+//#region gets
 exports.all = function(req, res) {
 	try {
-		res.json(movies.all());
+		res.json(database.all());
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE001')}`;
 		res.json(response);
 	} finally {
-		refresh();
+		database.refresh();
 	}
 };
 
 exports.get = function(req, res) {
 	try {
-		res.json(movies.get(req.params.id));
+		res.json(database.get(req.params.id));
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE001')}`;
 		res.json(response);
 	} finally {
-		refresh();
+		database.refresh();
 	}
 };
 
+exports.getIntervalFastetPrize = function(req, res) {
+	try {
+		res.json(database.getIntervalFastetPrize());
+	} catch (err) {
+		var response = `${message('ERROR', 'ERE001')}`;
+		res.json(response);
+	} finally {
+		database.refresh();
+	}
+};
+
+//#endregion
+
+//#region sets
 exports.create = function(req, res) {
 	try {
-		movies.save(req.body);
+		database.save(req.body);
 		var response = `${message('SUCCESS', 'SRE001')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE003')}`;
 		res.json(response);
 	} finally {
-		refresh();
+		database.refresh();
 	}
 };
 
 exports.update = function(req, res) {
 	try {
-		movies.update(req.params.id, req.body);
+		database.update(req.params.id, req.body);
 		var response = `${message('SUCCESS', 'SRE002')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE004')}`;
 		res.json(response);
 	} finally {
-		refresh();
+		database.refresh();
 	}
 };
 
 exports.delete = function(req, res) {
 	try {
-		movies.delete(req.params.id);
+		database.delete(req.params.id);
 		var response = `${message('SUCCESS', 'SRE003')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE005')}`;
 		res.json(response);
 	} finally {
-		refresh();
+		database.refresh();
 	}
 };
+
+//#endregion

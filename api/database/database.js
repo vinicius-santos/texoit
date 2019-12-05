@@ -4,9 +4,9 @@ const fs = require('fs');
 message = require('../helpers/message');
 let results = [];
 const path = 'movielist.csv';
-var id = 1;
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
+//#region gets
 exports.all = function() {
 	return results;
 };
@@ -15,6 +15,26 @@ exports.get = function(id) {
 	return results.find((x) => x.id == id);
 };
 
+exports.getIntervalFastetPrize = function() {
+	var producers = [];
+	results.sort((a, b) => (a.producers > b.producers ? 1 : b.producers > a.producers ? -1 : 0));
+	createListWinners(producers);
+	var max;
+	var min;
+	({ max, min } = insertProducers(producers, max, min));
+	producers = producers.filter((item) => item.interval !== 0);
+	producers.sort((a, b) => (a.interval > b.interval ? 1 : b.interval > a.interval ? -1 : 0));
+	var json = {
+		min: [ producers[0] ],
+		max: [ producers[producers.length - 1] ]
+	};
+	console.log(producers);
+	return json;
+};
+
+//#endregion
+
+//#region sets
 exports.save = function(data) {
 	try {
 		if (data) {
@@ -137,32 +157,91 @@ exports.delete = function(id) {
 	}
 };
 
+//#endregion
+
 exports.refresh = function() {
 	results = [];
+	var id = 1;
 	if (fs.existsSync(path)) {
 		var readStream = fs.createReadStream(path).setEncoding('utf-8');
-		if (results.length <= 0) {
-			csv.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' }).on('data', function(data) {
-				if (data) {
-					var mov = {
-						id: id,
-						year: Number(data[0]),
-						title: data[1],
-						studios: data[2],
-						producers: data[3],
-						winner: data[4]
-					};
-					id++;
-					results.push(mov);
-					sort(results);
-				}
-			});
-		}
+		csv.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' }).on('data', function(data) {
+			if (data) {
+				var mov = {
+					id: id,
+					year: data[0],
+					title: data[1],
+					studios: data[2],
+					producers: data[3],
+					winner: data[4]
+				};
+				id++;
+				results.push(mov);
+				sort(results);
+			}
+		});
 	}
 };
 
-function sort(arr) {
-	arr.sort(function(a, b) {
-		return a.year - b.year;
+//#region auxiliaries
+
+function insertProducers(producers, max, min) {
+	producers.forEach((producer) => {
+		max = 0;
+		min = 0;
+		results.forEach((result) => {
+			if (producer.producer === result.producers) {
+				if (min === 0) {
+					min = Number(result.year);
+				} else if (Number(result.year) < min) {
+					min = Number(result.year);
+				}
+				if (max === 0) {
+					max = Number(result.year);
+				} else if (Number(result.year) > max) {
+					max = Number(result.year);
+				}
+			}
+			producer.followingWin = max;
+			producer.previousWin = min;
+			producer.interval = max - min;
+		});
+	});
+	return { max, min };
+}
+
+function createListWinners(producers) {
+	results.forEach((item) => {
+		if (producers.length <= 0) {
+			var object = {
+				producer: item.producers,
+				interval: 0,
+				followingWin: 0,
+				previousWin: 0
+			};
+			if (item.winner === 'yes') {
+				producers.push(object);
+			}
+		} else {
+			var exist = producers.find((x) => x.producer === item.producers);
+			if (!exist) {
+				var object = {
+					producer: item.producers,
+					interval: 0,
+					followingWin: 0,
+					previousWin: 0
+				};
+				if (item.winner === 'yes') {
+					producers.push(object);
+				}
+			}
+		}
 	});
 }
+
+function sort(arr) {
+	arr.sort(function(a, b) {
+		return Number(a.year) - Number(b.year);
+	});
+}
+
+//#endregion
