@@ -2,40 +2,156 @@
 const csv = require('fast-csv');
 const fs = require('fs');
 message = require('../helpers/message');
-let results = [];
+//let results = [];
 const path = 'movielist.csv';
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
+
 //#region gets
-exports.all = function() {
-	return results;
+exports.all = async function() {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+		return results;
+	}
 };
 
-exports.get = function(id) {
-	return results.find((x) => x.id == id);
+exports.get = async function(idSearch) {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+	}
+	return results.find((x) => x.id == idSearch);
 };
 
-exports.getIntervalFastetPrize = function() {
-	var producers = [];
-	results.sort((a, b) => (a.producers > b.producers ? 1 : b.producers > a.producers ? -1 : 0));
-	var separeteds = separateNameWinners();
-	createListWinners(separeteds, producers);
-	createDate(separeteds, producers);
-	//return producers;
-	createInterval(producers);
-	producers = producers.filter((item) => item.interval !== 0);
-	producers.sort((a, b) => (a.interval > b.interval ? 1 : b.interval > a.interval ? -1 : 0));
-	var json = {
-		min: [ producers[0] ],
-		max: [ producers[producers.length - 1] ]
-	};
+exports.getIntervalFastetPrize = async function() {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+		var producers = [];
+		results.sort((a, b) => (a.producers > b.producers ? 1 : b.producers > a.producers ? -1 : 0));
+		var separeteds = separateNameWinners(results);
+		createListWinners(separeteds, producers);
+		createDate(separeteds, producers);
+		createInterval(producers);
+		producers = producers.filter((item) => item.interval !== 0);
+		producers.sort((a, b) => (a.interval > b.interval ? 1 : b.interval > a.interval ? -1 : 0));
+		var json = {
+			min: [ producers[0] ],
+			max: [ producers[producers.length - 1] ]
+		};
+	}
 	return json;
 };
 
 //#endregion
 
 //#region sets
-exports.save = function(data) {
+exports.save = async function(data) {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+	}
 	try {
 		if (data) {
 			results.push(data);
@@ -78,14 +194,43 @@ exports.save = function(data) {
 	}
 };
 
-exports.update = function(id, data) {
+exports.update = async function(idUp, data) {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+	}
 	try {
 		if (results.length <= 0) {
 			throw new Error();
 		}
-		if (id && data) {
+		if (idUp && data) {
 			results.forEach((item, index) => {
-				if (item.id == id) {
+				if (item.id == idUp) {
 					item = data;
 					results[index] = data;
 				}
@@ -118,14 +263,43 @@ exports.update = function(id, data) {
 	}
 };
 
-exports.delete = function(id) {
+exports.delete = async function(idDel) {
+	var results = [];
+	var id = 1;
+	if (fs.existsSync(path)) {
+		var readStream = fs.createReadStream(path).setEncoding('utf-8');
+		results = await new Promise(async (resolve, reject) => {
+			csv
+				.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' })
+				.on('data', function(data) {
+					if (data) {
+						var mov = {
+							id: id,
+							year: data[0],
+							title: data[1],
+							studios: data[2],
+							producers: data[3],
+							winner: data[4]
+						};
+						id++;
+						results.push(mov);
+						results.sort(
+							(a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0)
+						);
+					}
+				})
+				.on('end', (x) => {
+					resolve(results);
+				});
+		});
+	}
 	try {
 		if (results.length <= 0) {
 			throw new Error();
 		}
-		if (id) {
+		if (idDel) {
 			results.forEach((item, index) => {
-				if (item.id == id) {
+				if (item.id == idDel) {
 					results.splice(index, 1);
 				}
 			});
@@ -159,55 +333,7 @@ exports.delete = function(id) {
 
 //#endregion
 
-exports.refresh = function() {
-	results = [];
-	var id = 1;
-	if (fs.existsSync(path)) {
-		var readStream = fs.createReadStream(path).setEncoding('utf-8');
-		csv.parseStream(readStream, { ignoreEmpty: true, delimiter: ';' }).on('data', function(data) {
-			if (data) {
-				var mov = {
-					id: id,
-					year: data[0],
-					title: data[1],
-					studios: data[2],
-					producers: data[3],
-					winner: data[4]
-				};
-				id++;
-				results.push(mov);
-				sort(results);
-			}
-		});
-	}
-};
-
 //#region auxiliaries
-
-function insertProducers(producers, max, min) {
-	producers.forEach((producer) => {
-		max = 0;
-		min = 0;
-		results.forEach((result) => {
-			if (producer.producer === result.producers && result.winner == 'yes') {
-				if (min === 0) {
-					min = Number(result.year);
-				} else if (Number(result.year) < min) {
-					min = Number(result.year);
-				}
-				if (max === 0) {
-					max = Number(result.year);
-				} else if (Number(result.year) > max) {
-					max = Number(result.year);
-				}
-			}
-			producer.previousWin = min;
-			producer.followingWin = max;
-			producer.interval = max - min;
-		});
-	});
-	return { max, min };
-}
 
 function createListWinners(separeteds, producers) {
 	separeteds.forEach((item) => {
@@ -240,14 +366,12 @@ function createListWinners(separeteds, producers) {
 
 function createDate(separeteds, producers) {
 	producers.forEach((prod) => {
-
 		var item = separeteds.filter((x) => x.producers.includes(prod.producer) && x.winner === 'yes');
 		item.sort((a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0));
 		var min = item[0].year;
 		var max = item[item.length - 1].year;
 		prod.previousWin = Number(min);
 		prod.followingWin = Number(max);
-
 	});
 }
 
@@ -257,7 +381,7 @@ function createInterval(producers) {
 	});
 }
 
-function separateNameWinners() {
+function separateNameWinners(results) {
 	var separateWinner = [];
 	var winner;
 	results.forEach((producer) => {

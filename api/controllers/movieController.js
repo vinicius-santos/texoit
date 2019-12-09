@@ -1,80 +1,67 @@
 message = require('../helpers/message');
 const database = require('../database/database');
-database.refresh();
 
 //#region gets
-exports.all = function(req, res) {
+exports.all = async function(req, res) {
 	try {
-		res.json(database.all());
+		res.json(await database.all());
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE001')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
-exports.get = function(req, res) {
+exports.get = async function(req, res) {
 	try {
-		res.json(database.get(req.params.id));
+		res.json(await database.get(req.params.id));
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE001')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
-exports.getIntervalFastetPrize = function(req, res) {
+exports.getIntervalFastetPrize = async function(req, res) {
 	try {
-		res.json(database.getIntervalFastetPrize());
+		res.json(await database.getIntervalFastetPrize());
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE001')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
 //#endregion
 
 //#region sets
-exports.create = function(req, res) {
+exports.create = async function(req, res) {
 	try {
-		database.save(req.body);
+		await database.save(req.body);
 		var response = `${message('SUCCESS', 'SRE001')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE003')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
-exports.update = function(req, res) {
+exports.update = async function(req, res) {
 	try {
-		database.update(req.params.id, req.body);
+		await database.update(req.params.id, req.body);
 		var response = `${message('SUCCESS', 'SRE002')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE004')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
-exports.delete = function(req, res) {
+exports.delete = async function(req, res) {
 	try {
-		database.delete(req.params.id);
+		await database.delete(req.params.id);
 		var response = `${message('SUCCESS', 'SRE003')}`;
 		res.json(response);
 	} catch (err) {
 		var response = `${message('ERROR', 'ERE005')}`;
 		res.json(response);
-	} finally {
-		database.refresh();
 	}
 };
 
