@@ -1,6 +1,6 @@
 { 
     "FILME_VALIDO":{ 
-       "year":2020,
+       "year":"2020",
        "title":"teste",
        "studios":"waldisney",
        "producers":"teste",

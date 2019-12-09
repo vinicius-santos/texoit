@@ -18,17 +18,17 @@ exports.get = function(id) {
 exports.getIntervalFastetPrize = function() {
 	var producers = [];
 	results.sort((a, b) => (a.producers > b.producers ? 1 : b.producers > a.producers ? -1 : 0));
-	createListWinners(producers);
-	var max;
-	var min;
-	({ max, min } = insertProducers(producers, max, min));
+	var separeteds = separateNameWinners();
+	createListWinners(separeteds, producers);
+	createDate(separeteds, producers);
+	//return producers;
+	createInterval(producers);
 	producers = producers.filter((item) => item.interval !== 0);
 	producers.sort((a, b) => (a.interval > b.interval ? 1 : b.interval > a.interval ? -1 : 0));
 	var json = {
 		min: [ producers[0] ],
 		max: [ producers[producers.length - 1] ]
 	};
-	console.log(producers);
 	return json;
 };
 
@@ -189,7 +189,7 @@ function insertProducers(producers, max, min) {
 		max = 0;
 		min = 0;
 		results.forEach((result) => {
-			if (producer.producer === result.producers) {
+			if (producer.producer === result.producers && result.winner == 'yes') {
 				if (min === 0) {
 					min = Number(result.year);
 				} else if (Number(result.year) < min) {
@@ -201,22 +201,22 @@ function insertProducers(producers, max, min) {
 					max = Number(result.year);
 				}
 			}
-			producer.followingWin = max;
 			producer.previousWin = min;
+			producer.followingWin = max;
 			producer.interval = max - min;
 		});
 	});
 	return { max, min };
 }
 
-function createListWinners(producers) {
-	results.forEach((item) => {
+function createListWinners(separeteds, producers) {
+	separeteds.forEach((item) => {
 		if (producers.length <= 0) {
 			var object = {
 				producer: item.producers,
 				interval: 0,
-				followingWin: 0,
-				previousWin: 0
+				previousWin: 0,
+				followingWin: 0
 			};
 			if (item.winner === 'yes') {
 				producers.push(object);
@@ -227,8 +227,8 @@ function createListWinners(producers) {
 				var object = {
 					producer: item.producers,
 					interval: 0,
-					followingWin: 0,
-					previousWin: 0
+					previousWin: 0,
+					followingWin: 0
 				};
 				if (item.winner === 'yes') {
 					producers.push(object);
@@ -236,6 +236,44 @@ function createListWinners(producers) {
 			}
 		}
 	});
+}
+
+function createDate(separeteds, producers) {
+	producers.forEach((prod) => {
+
+		var item = separeteds.filter((x) => x.producers.includes(prod.producer) && x.winner === 'yes');
+		item.sort((a, b) => (Number(a.year) > Number(b.year) ? 1 : Number(b.year) > Number(a.year) ? -1 : 0));
+		var min = item[0].year;
+		var max = item[item.length - 1].year;
+		prod.previousWin = Number(min);
+		prod.followingWin = Number(max);
+
+	});
+}
+
+function createInterval(producers) {
+	producers.forEach((prod) => {
+		prod.interval = prod.followingWin - prod.previousWin;
+	});
+}
+
+function separateNameWinners() {
+	var separateWinner = [];
+	var winner;
+	results.forEach((producer) => {
+		winner = producer.producers.split(/(?:,|and )+/);
+		winner.forEach((item) => {
+			var obj = {
+				year: producer.year,
+				title: producer.title,
+				studios: producer.studios,
+				producers: item,
+				winner: producer.winner
+			};
+			separateWinner.push(obj);
+		});
+	});
+	return separateWinner.sort((a, b) => (a.producers > b.producers ? 1 : b.producers > a.producers ? -1 : 0));
 }
 
 function sort(arr) {

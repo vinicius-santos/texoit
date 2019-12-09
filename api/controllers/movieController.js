@@ -1,11 +1,5 @@
 message = require('../helpers/message');
 const database = require('../database/database');
-//const refresh = database.refresh;
-//const movies = database;
-//const save = database.save;
-//const update = database.update;
-//const get = database.get;
-
 database.refresh();
 
 //#region gets
